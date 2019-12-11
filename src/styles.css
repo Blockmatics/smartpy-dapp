@@ -1,0 +1,19 @@
+body {
+  color: black;
+  font-weight: 400;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+table {
+  width: 100%;
+}
+.example-card{
+	width: 100%;
+}
+.example-container {
+  display: flex;
+  flex-direction: column;
+}
+.example-container > * {
+  width: 100%;
+}

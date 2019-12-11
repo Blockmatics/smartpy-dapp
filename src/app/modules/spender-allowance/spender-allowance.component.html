@@ -1,0 +1,42 @@
+<mat-grid-list cols="2" rowHeight="2:1">
+  <mat-grid-tile>
+  			<mat-card class="example-card">
+				<mat-card-title>
+					Spender Allowance
+				</mat-card-title>
+				<form [formGroup]="transferform" (submit)="login($event)">
+					<mat-card-content>
+						<div class="example-container">
+							<mat-form-field>
+						    	<input matInput placeholder="Wallet Address to Allow"  formControlName="wallet">
+						  	</mat-form-field>
+						  	<mat-form-field>
+						    	<input matInput placeholder="Amount" formControlName="amount">
+						  	</mat-form-field>
+
+						  	<mat-form-field>
+						    	<input matInput placeholder="Secret Key" formControlName="secret">
+						  	</mat-form-field>
+
+							<mat-card-actions>
+				    			<button mat-raised-button type="submit" color="primary">Transfer</button>
+				  			</mat-card-actions>
+			  			</div>
+					</mat-card-content>
+				</form>  
+			</mat-card>
+
+  	</mat-grid-tile>
+  	<mat-grid-tile>
+  			<mat-card class="example-card">
+				<mat-card-title>
+					Logs
+				</mat-card-title>
+					<mat-card-content>
+						<div class="one" [innerHtml]="logs"></div>
+					</mat-card-content>
+			</mat-card>
+	</mat-grid-tile>
+</mat-grid-list>
+
+
