@@ -8,21 +8,21 @@ class SmartToken(sp.Contract):
     def transfer(self, params):
         sp.verify((sp.sender == self.data.administrator) |
             (~self.data.paused &
-                ((params.f == sp.sender) |
-                 (self.data.balances[params.f].approvals[params.t] >= params.amount))))
-        self.addAddressIfNecessary(params.t)
-        sp.verify(self.data.balances[params.f].balance >= params.amount)
-        self.data.balances[params.f].balance -= params.amount
-        self.data.balances[params.t].balance += params.amount
-        sp.if params.f != sp.sender:
-            self.data.balances[params.f].approvals[params.t] -= params.amount
+                ((params.fromAddr == sp.sender) |
+                 (self.data.balances[params.fromAddr].approvals[sp.sender] >= params.amount))))
+        self.addAddressIfNecessary(params.toAddr)
+        sp.verify(self.data.balances[params.fromAddr].balance >= params.amount)
+        self.data.balances[params.fromAddr].balance -= params.amount
+        self.data.balances[params.toAddr].balance += params.amount
+        sp.if (params.fromAddr != sp.sender) & (self.data.administrator != sp.sender):
+            self.data.balances[params.fromAddr].approvals[params.toAddr] -= params.amount
 
     @sp.entryPoint
     def approve(self, params):
         sp.verify((sp.sender == self.data.administrator) |
-                  (~self.data.paused & (params.f == sp.sender)))
-        sp.verify(self.data.balances[params.f].approvals.get(params.t, 0) == 0)
-        self.data.balances[params.f].approvals[params.t] = params.amount
+                  (~self.data.paused & (params.fromAddr == sp.sender)))
+        sp.verify(self.data.balances[params.fromAddr].approvals.get(params.toAddr, 0) == 0)
+        self.data.balances[params.fromAddr].approvals[params.toAddr] = params.amount
 
     @sp.entryPoint
     def setPause(self, params):
@@ -38,20 +38,14 @@ class SmartToken(sp.Contract):
     def mint(self, params):
         sp.verify(sp.sender == self.data.administrator)
         #end date timestmap of mint coins
-        end_date = sp.timestamp(1575955231)
-        #admin address where 10% funds will deposit for every mint
-        admin_address = sp.address('tz1fJgXJ5cRqvTR2aZkxnk2JyrJURVCcnvj5')
+        end_date = sp.timestamp(1675955231)
         sp.verify(sp.now <= end_date)
         sp.if sp.now <= end_date:
             self.addAddressIfNecessary(params.address)
             self.data.balances[params.address].balance += params.amount
             self.data.totalSupply += params.amount
-            
-            self.addAddressIfNecessary(admin_address)
-            self.data.balances[admin_address].balance += params.admin_amount
-            self.data.totalSupply += params.admin_amount
-            
-        
+
+
     @sp.entryPoint
     def burn(self, params):
         sp.verify(sp.sender == self.data.administrator)
@@ -64,6 +58,23 @@ class SmartToken(sp.Contract):
             self.data.balances[address] = sp.record(balance = 0, approvals = {})
 
 
+    #  @sp.entryPoint
+    #  def getBalance(self, params):
+    #      pass
+
+    #  @sp.entryPoint
+    #  def getAllowance(self, params):
+    #      pass
+
+    #  @sp.entryPoint
+    #  def getTotalSupply(self, params):
+    #      pass
+
+    #  @sp.entryPoint
+    #  def getAdministrator(self, params):
+    #      return self.data.administrator
+
+
 if "templates" not in __name__:
     @addTest(name = "SmartToken")
     def test():
@@ -71,15 +82,35 @@ if "templates" not in __name__:
         scenario = sp.testScenario()
         scenario.h1("SmartToken Contract")
 
-        admin = sp.address("tz1fJgXJ5cRqvTR2aZkxnk2JyrJURVCcnvj5")
+        admin = sp.address("tz1QxtZ5N63UbhV1DpF99sUjPUqj1aXNP7ey")
         alice = sp.address("tz1g9iLzDbKjMWMLeRpAggKiNRjhrWEQmBZh")
+        bob = sp.address("tz1TdAk9zxts2HWj5BTC4sRE91nV6sANTUBp")
+        eve = sp.address("tz1dUpfvjmAX3HLYvYhAwb94qe7nJodJr51c")
 
         c1 = SmartToken(admin)
 
         scenario += c1
         scenario.h2("Admin mints a few coins")
-        scenario += c1.mint(address = alice, amount = 120, admin_amount=12).run(sender = admin)
-        
+        scenario += c1.mint(address = alice, amount = 1200).run(sender = admin)
+        scenario += c1.approve(fromAddr = alice, toAddr = bob, amount=2000).run(sender = admin)
+        scenario += c1.transfer(fromAddr = alice, toAddr = bob, amount=800).run(alice)
+        scenario += c1.transfer(fromAddr = bob, toAddr = eve, amount=200).run(sender = admin)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         
