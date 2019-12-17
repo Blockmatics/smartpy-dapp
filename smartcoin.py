@@ -37,14 +37,9 @@ class SmartToken(sp.Contract):
     @sp.entryPoint
     def mint(self, params):
         sp.verify(sp.sender == self.data.administrator)
-        #end date timestmap of mint coins
-        end_date = sp.timestamp(1675955231)
-        sp.verify(sp.now <= end_date)
-        sp.if sp.now <= end_date:
-            self.addAddressIfNecessary(params.address)
-            self.data.balances[params.address].balance += params.amount
-            self.data.totalSupply += params.amount
-
+        self.addAddressIfNecessary(params.address)
+        self.data.balances[params.address].balance += params.amount
+        self.data.totalSupply += params.amount
 
     @sp.entryPoint
     def burn(self, params):
@@ -95,22 +90,3 @@ if "templates" not in __name__:
         scenario += c1.approve(fromAddr = alice, toAddr = bob, amount=2000).run(sender = admin)
         scenario += c1.transfer(fromAddr = alice, toAddr = bob, amount=800).run(alice)
         scenario += c1.transfer(fromAddr = bob, toAddr = eve, amount=200).run(sender = admin)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
