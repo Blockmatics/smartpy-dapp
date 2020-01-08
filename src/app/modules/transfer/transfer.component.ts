@@ -54,6 +54,9 @@ export class TransferComponent implements OnInit {
           .send({ fee: 30000, gasLimit: 200000 })
           //tz1SC26Bc2nCgs7Kh3Abf3tDwPYGDXiMAsWt
 
+
+          //const op = await contract.methods.crowdSale(amount).send({ fee: 30000, gasLimit: 200000,amount:amount })
+
           console.log('Awaiting confirmation...');
           this.logs+='<p>Awaiting confirmation...Please wait!</p>';
           await op.confirmation();

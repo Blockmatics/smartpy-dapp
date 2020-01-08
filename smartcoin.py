@@ -2,9 +2,9 @@ import smartpy as sp
 
 class SmartToken(sp.Contract):
     def __init__(self, admin, value):
-        self.init(paused = False, balances = sp.bigMap(), administrator = admin, totalSupply = 0, end_date = sp.timestamp(0), storedValue = value)
+        self.init(paused = False, balances = sp.big_map(), administrator = admin, totalSupply = 0, end_date = sp.timestamp(0), storedValue = value)
 
-    @sp.entryPoint
+    @sp.entry_point
     def transfer(self, params):
         sp.verify((sp.sender == self.data.administrator) |
             (~self.data.paused &
@@ -18,31 +18,31 @@ class SmartToken(sp.Contract):
             self.data.balances[params.fromAddr].approvals[params.toAddr] -= params.amount
        
 
-    @sp.entryPoint
+    @sp.entry_point
     def approve(self, params):
         sp.verify((sp.sender == self.data.administrator) |
                   (~self.data.paused & (params.fromAddr == sp.sender)))
         sp.verify(self.data.balances[params.fromAddr].approvals.get(params.toAddr, 0) == 0)
         self.data.balances[params.fromAddr].approvals[params.toAddr] = params.amount
         
-    @sp.entryPoint
+    @sp.entry_point
     def setPause(self, params):
         sp.verify(sp.sender == self.data.administrator)
         self.data.paused = params
 
-    @sp.entryPoint
+    @sp.entry_point
     def setAdministrator(self, params):
         sp.verify(sp.sender == self.data.administrator)
         self.data.administrator = params
 
-    @sp.entryPoint
+    @sp.entry_point
     def mint(self, params):
         sp.verify(sp.sender == self.data.administrator)
         self.addAddressIfNecessary(params.address)
         self.data.balances[params.address].balance += params.amount
         self.data.totalSupply += params.amount
 
-    @sp.entryPoint
+    @sp.entry_point
     def burn(self, params):
         sp.verify(sp.sender == self.data.administrator)
         sp.verify(self.data.balances[params.address].balance >= params.amount)
@@ -53,27 +53,27 @@ class SmartToken(sp.Contract):
         sp.if ~ self.data.balances.contains(address):
             self.data.balances[address] = sp.record(balance = 0, approvals = {})
 
-    @sp.entryPoint
+    @sp.entry_point
     def getBalance(self, params):
         return self.data.balances
 
-    #  @sp.entryPoint
+    #  @sp.entry_point
     #  def getAllowance(self, params):
     #      pass
 
-    @sp.entryPoint
+    @sp.entry_point
     def getTotalSupply(self, params):
         return self.data.totalSupply
 
-    @sp.entryPoint
+    @sp.entry_point
     def getAdministrator(self, params):
         return self.data.administrator
     
             
 class crowdSaleContract(SmartToken):
-    @sp.entryPoint
+    @sp.entry_point
     def crowdSale(self, params):
-        self.data.end_date = sp.timestamp(1577269903)
+        self.data.end_date = sp.timestamp(1581074816)
         sp.verify(sp.now <= self.data.end_date)
         sp.if sp.now <= self.data.end_date:
             self.data.storedValue = params.value
@@ -81,16 +81,16 @@ class crowdSaleContract(SmartToken):
             sp.send(self.data.administrator, amount)
 
 if "templates" not in __name__:
-    @addTest(name = "SmartToken")
+    @sp.add_test(name = "SmartToken")
     def test():
 
-        scenario = sp.testScenario()
+        scenario = sp.test_scenario()
         scenario.h1("SmartToken Contract")
         value = 1
 
-        admin = sp.address("tz1VSUr8wwNhLAzempoch5d6hLRiTh8Cjcjb")
-        alice = sp.address("tz1SgHSwCbcNQiE4r24dxYTvvbo9xcLwdh6i")
-        bob   = sp.address("tz1aSkwEot3L2kmUvcoxzjMomb9mvBNuzFK6")
+        admin = sp.address("tz1eRtFtKik3LyDvqVt3csXc64y6nn5BXyps")
+        alice = sp.address("tz1aJLzguZuqbf1oH8aSPPiqrjed4H1YRDFi")
+        bob   = sp.address("tz1MGJKeEoJpNZY3rP9V8yHWVrLPSRJvTyU2")
 
         c1 = SmartToken(admin, value)
 
