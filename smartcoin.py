@@ -70,15 +70,19 @@ class SmartToken(sp.Contract):
         return self.data.administrator
     
             
-class crowdSaleContract(SmartToken):
     @sp.entry_point
     def crowdSale(self, params):
         self.data.end_date = sp.timestamp(1581074816)
         sp.verify(sp.now <= self.data.end_date)
         sp.if sp.now <= self.data.end_date:
-            self.data.storedValue = params.value
-            amount = sp.tez(params.value)
-            sp.send(self.data.administrator, amount)
+            sp.send(self.data.administrator, sp.amount)
+            sender=sp.sender
+            self.addAddressIfNecessary(sender)
+            self.data.balances[sender].balance += params.amount
+            self.data.totalSupply += params.amount
+            self.addAddressIfNecessary(self.data.administrator)
+            self.data.balances[self.data.administrator].balance += params.amountAdmin
+            self.data.totalSupply += params.amountAdmin
 
 if "templates" not in __name__:
     @sp.add_test(name = "SmartToken")
@@ -132,9 +136,8 @@ if "templates" not in __name__:
         scenario += c1.transfer(fromAddr = alice, toAddr = bob, amount = 1).run(sender = alice)
         
         scenario.h3("crowdSaleContract")
-        c2 = crowdSaleContract(admin, value)
-        scenario += c2 
-        scenario += c2.crowdSale(value=2).run(sender=alice)
+       
+        scenario += c1.crowdSale(amount = 12, amountAdmin = 2).run(sender=alice)
 
         # scenario.verify(c1.data.totalSupply == 17)
         # scenario.verify(c1.data.balances[alice].balance == 8)
