@@ -1,8 +1,8 @@
 import smartpy as sp
 
 class SmartToken(sp.Contract):
-    def __init__(self, admin, value):
-        self.init(paused = False, balances = sp.big_map(), administrator = admin, totalSupply = 0, end_date = sp.timestamp(0), storedValue = value)
+    def __init__(self, admin, value, end_date):
+        self.init(paused = False, balances = sp.big_map(), administrator = admin, totalSupply = 0, end_date = sp.timestamp(end_date), storedValue = value)
 
     @sp.entry_point
     def transfer(self, params):
@@ -41,6 +41,11 @@ class SmartToken(sp.Contract):
         self.addAddressIfNecessary(params.address)
         self.data.balances[params.address].balance += params.amount
         self.data.totalSupply += params.amount
+    
+    def mintInternal(self, address, amount):
+        self.addAddressIfNecessary(address)
+        self.data.balances[address].balance += amount
+        self.data.totalSupply += amount
 
     @sp.entry_point
     def burn(self, params):
@@ -72,17 +77,15 @@ class SmartToken(sp.Contract):
             
     @sp.entry_point
     def crowdSale(self, params):
-        self.data.end_date = sp.timestamp(1581074816)
         sp.verify(sp.now <= self.data.end_date)
-        sp.if sp.now <= self.data.end_date:
+        sp.if sp.amount == sp.tez(2):
             sp.send(self.data.administrator, sp.amount)
             sender=sp.sender
-            self.addAddressIfNecessary(sender)
-            self.data.balances[sender].balance += params.amount
-            self.data.totalSupply += params.amount
-            self.addAddressIfNecessary(self.data.administrator)
-            self.data.balances[self.data.administrator].balance += params.amountAdmin
-            self.data.totalSupply += params.amountAdmin
+            senderAmount=params.amount*1000
+            adminAmount=params.amount*100
+            self.mintInternal(sender,senderAmount)
+            self.mintInternal(self.data.administrator,adminAmount)
+      
 
 if "templates" not in __name__:
     @sp.add_test(name = "SmartToken")
@@ -91,12 +94,14 @@ if "templates" not in __name__:
         scenario = sp.test_scenario()
         scenario.h1("SmartToken Contract")
         value = 1
+        end_date=1581074816
+        
 
         admin = sp.address("tz1eRtFtKik3LyDvqVt3csXc64y6nn5BXyps")
         alice = sp.address("tz1aJLzguZuqbf1oH8aSPPiqrjed4H1YRDFi")
         bob   = sp.address("tz1MGJKeEoJpNZY3rP9V8yHWVrLPSRJvTyU2")
 
-        c1 = SmartToken(admin, value)
+        c1 = SmartToken(admin, value, end_date)
 
         scenario += c1
         scenario.h2("Admin Wallet Address")
@@ -137,7 +142,7 @@ if "templates" not in __name__:
         
         scenario.h3("crowdSaleContract")
        
-        scenario += c1.crowdSale(amount = 12, amountAdmin = 2).run(sender=alice)
+        scenario += c1.crowdSale(amount = 2).run(sender=alice, amount = sp.tez(2))
 
         # scenario.verify(c1.data.totalSupply == 17)
         # scenario.verify(c1.data.balances[alice].balance == 8)
