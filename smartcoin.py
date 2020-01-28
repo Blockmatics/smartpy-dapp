@@ -2,7 +2,7 @@ import smartpy as sp
 
 class SmartToken(sp.Contract):
     def __init__(self, admin, value, end_date):
-        self.init(paused = False, balances = sp.big_map(), administrator = admin, totalSupply = 0, end_date = sp.timestamp(end_date), storedValue = value)
+        self.init(paused = False, balances = sp.big_map(), administrator = admin, totalSupply = 0, end_date = sp.timestamp(end_date), storedValue = value, xtzContribution=0)
 
     @sp.entry_point
     def transfer(self, params):
@@ -81,11 +81,13 @@ class SmartToken(sp.Contract):
         sp.if sp.amount == sp.tez(2):
             sp.send(self.data.administrator, sp.amount)
             sender=sp.sender
-            senderAmount=params.amount*1000
-            adminAmount=params.amount*100
-            self.mintInternal(sender,senderAmount)
-            self.mintInternal(self.data.administrator,adminAmount)
-      
+            sp.if self.data.xtzContribution < 50000 :
+                self.mintInternal(sender,params.amount*1200)
+                self.mintInternal(self.data.administrator,params.amount*120)
+            sp.else:
+                self.mintInternal(sender,params.amount*1000)
+                self.mintInternal(self.data.administrator,params.amount*100)
+            self.data.xtzContribution += params.amount
 
 if "templates" not in __name__:
     @sp.add_test(name = "SmartToken")
@@ -142,6 +144,7 @@ if "templates" not in __name__:
         
         scenario.h3("crowdSaleContract")
        
+        scenario += c1.crowdSale(amount = 2).run(sender=alice, amount = sp.tez(2))
         scenario += c1.crowdSale(amount = 2).run(sender=alice, amount = sp.tez(2))
 
         # scenario.verify(c1.data.totalSupply == 17)
