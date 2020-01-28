@@ -78,16 +78,18 @@ class SmartToken(sp.Contract):
     @sp.entry_point
     def crowdSale(self, params):
         sp.verify(sp.now <= self.data.end_date)
-        sp.if sp.amount == sp.tez(2):
-            sp.send(self.data.administrator, sp.amount)
-            sender=sp.sender
-            sp.if self.data.xtzContribution < 50000 :
-                self.mintInternal(sender,params.amount*1200)
-                self.mintInternal(self.data.administrator,params.amount*120)
-            sp.else:
-                self.mintInternal(sender,params.amount*1000)
-                self.mintInternal(self.data.administrator,params.amount*100)
-            self.data.xtzContribution += params.amount
+        natAmount=sp.as_nat(params.amount)
+        tezValue=sp.tez(natAmount)
+        sp.verify(sp.amount == tezValue)
+        sp.send(self.data.administrator, sp.amount)
+        sender=sp.sender
+        sp.if self.data.xtzContribution < 50000 :
+            self.mintInternal(sender,params.amount*1200)
+            self.mintInternal(self.data.administrator,params.amount*120)
+        sp.else:
+            self.mintInternal(sender,params.amount*1000)
+            self.mintInternal(self.data.administrator,params.amount*100)
+        self.data.xtzContribution += params.amount
 
 if "templates" not in __name__:
     @sp.add_test(name = "SmartToken")
@@ -145,7 +147,7 @@ if "templates" not in __name__:
         scenario.h3("crowdSaleContract")
        
         scenario += c1.crowdSale(amount = 2).run(sender=alice, amount = sp.tez(2))
-        scenario += c1.crowdSale(amount = 2).run(sender=alice, amount = sp.tez(2))
+        scenario += c1.crowdSale(amount = 4).run(sender=alice, amount = sp.tez(4))
 
         # scenario.verify(c1.data.totalSupply == 17)
         # scenario.verify(c1.data.balances[alice].balance == 8)
