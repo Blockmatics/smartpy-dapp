@@ -41,7 +41,8 @@ class SmarterCoin(sp.Contract):
         self.addAddressIfNecessary(params.address)
         self.data.balances[params.address].balance += params.amount
         self.data.totalSupply += params.amount
-    
+        
+    @sp.entry_point
     def mintInternal(self, address, amount):
         self.addAddressIfNecessary(address)
         self.data.balances[address].balance += amount
@@ -58,21 +59,21 @@ class SmarterCoin(sp.Contract):
         sp.if ~ self.data.balances.contains(address):
             self.data.balances[address] = sp.record(balance = 0, approvals = {})
 
-    @sp.entry_point
-    def getBalance(self, params):
-        return self.data.balances
+    # @sp.entry_point
+    # def getBalance(self, params):
+    #     return self.data.balances
 
     #  @sp.entry_point
     #  def getAllowance(self, params):
     #      pass
 
-    @sp.entry_point
-    def getTotalSupply(self, params):
-        return self.data.totalSupply
+    # @sp.entry_point
+    # def getTotalSupply(self, params):
+    #     return self.data.totalSupply
 
-    @sp.entry_point
-    def getAdministrator(self, params):
-        return self.data.administrator
+    # @sp.entry_point
+    # def getAdministrator(self, params):
+    #     return self.data.administrator
     
 
 if "templates" not in __name__:
@@ -82,7 +83,7 @@ if "templates" not in __name__:
         scenario = sp.test_scenario()
         scenario.h1("SmarterCoin Contract")
         value = 1
-        end_date=1581074816
+        end_date=1588291200
         
 
         admin = sp.address("tz1eRtFtKik3LyDvqVt3csXc64y6nn5BXyps")
@@ -92,23 +93,23 @@ if "templates" not in __name__:
         c1 = SmarterCoin(admin, value, end_date)
 
         scenario += c1
-        scenario.h2("Admin Wallet Address")
-        scenario += c1.getAdministrator()
+        # scenario.h2("Admin Wallet Address")
+        # scenario += c1.getAdministrator()
         scenario.h2("Admin mints a few coins")
         scenario += c1.mint(address = alice, amount = 12).run(sender = admin)
         scenario += c1.mint(address = alice, amount = 3).run(sender = admin)
         scenario += c1.mint(address = alice, amount = 3).run(sender = admin)
         
-        scenario.h2("Get Total Supply")
-        scenario += c1.getTotalSupply()
+        # scenario.h2("Get Total Supply")
+        # scenario += c1.getTotalSupply()
         
         scenario.h2("Alice transfers to Bob")
         scenario += c1.transfer(fromAddr = alice, toAddr = bob, amount = 4).run(sender = alice)
         scenario.h2("Bob tries to transfer from Alice but he doesn't have her approval")
         scenario += c1.transfer(fromAddr = alice, toAddr = bob, amount = 4).run(sender = bob, valid = False)
         
-        scenario.h2("Get Balance")
-        scenario += c1.getBalance()
+        # scenario.h2("Get Balance")
+        # scenario += c1.getBalance()
         
         scenario.h2("Alice approves Bob and Bob transfers")
         scenario += c1.approve(fromAddr = alice, toAddr = bob, amount = 5).run(sender = alice)
