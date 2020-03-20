@@ -1,8 +1,8 @@
 import smartpy as sp
 
-class SmartToken(sp.Contract):
+class SmartCoin(sp.Contract):
     def __init__(self, admin, value, end_date):
-        self.init(paused = False, balances = sp.big_map(), administrator = admin, totalSupply = 0, end_date = sp.timestamp(end_date), storedValue = value, xtzContribution=0)
+        self.init(paused = False, balances = sp.big_map(), administrator = admin, totalSupply = 0, end_date = sp.timestamp(end_date), storedValue = value)
 
     @sp.entry_point
     def transfer(self, params):
@@ -16,7 +16,7 @@ class SmartToken(sp.Contract):
         self.data.balances[params.toAddr].balance += params.amount
         sp.if (params.fromAddr != sp.sender) & (self.data.administrator != sp.sender):
             self.data.balances[params.fromAddr].approvals[params.toAddr] -= params.amount
-       
+
 
     @sp.entry_point
     def approve(self, params):
@@ -24,7 +24,7 @@ class SmartToken(sp.Contract):
                   (~self.data.paused & (params.fromAddr == sp.sender)))
         sp.verify(self.data.balances[params.fromAddr].approvals.get(params.toAddr, 0) == 0)
         self.data.balances[params.fromAddr].approvals[params.toAddr] = params.amount
-        
+
     @sp.entry_point
     def setPause(self, params):
         sp.verify(sp.sender == self.data.administrator)
@@ -41,11 +41,6 @@ class SmartToken(sp.Contract):
         self.addAddressIfNecessary(params.address)
         self.data.balances[params.address].balance += params.amount
         self.data.totalSupply += params.amount
-    
-    def mintInternal(self, address, amount):
-        self.addAddressIfNecessary(address)
-        self.data.balances[address].balance += amount
-        self.data.totalSupply += amount
 
     @sp.entry_point
     def burn(self, params):
@@ -58,74 +53,58 @@ class SmartToken(sp.Contract):
         sp.if ~ self.data.balances.contains(address):
             self.data.balances[address] = sp.record(balance = 0, approvals = {})
 
-    @sp.entry_point
-    def getBalance(self, params):
-        return self.data.balances
+    # @sp.entry_point
+    # def getBalance(self, params):
+    #     return self.data.balances
 
     #  @sp.entry_point
     #  def getAllowance(self, params):
     #      pass
 
-    @sp.entry_point
-    def getTotalSupply(self, params):
-        return self.data.totalSupply
+    # @sp.entry_point
+    # def getTotalSupply(self, params):
+    #     return self.data.totalSupply
 
-    @sp.entry_point
-    def getAdministrator(self, params):
-        return self.data.administrator
-    
-            
-    @sp.entry_point
-    def crowdSale(self, params):
-        sp.verify(sp.now <= self.data.end_date)
-        natAmount=sp.as_nat(params.amount)
-        tezValue=sp.tez(natAmount)
-        sp.verify(sp.amount == tezValue)
-        sp.send(self.data.administrator, sp.amount)
-        sender=sp.sender
-        sp.if self.data.xtzContribution < 50000 :
-            self.mintInternal(sender,params.amount*1200)
-            self.mintInternal(self.data.administrator,params.amount*120)
-        sp.else:
-            self.mintInternal(sender,params.amount*1000)
-            self.mintInternal(self.data.administrator,params.amount*100)
-        self.data.xtzContribution += params.amount
+    # @sp.entry_point
+    # def getAdministrator(self, params):
+    #     return self.data.administrator
+
 
 if "templates" not in __name__:
-    @sp.add_test(name = "SmartToken")
+    @sp.add_test(name = "SmartCoin")
     def test():
 
         scenario = sp.test_scenario()
-        scenario.h1("SmartToken Contract")
+        scenario.h1("SmartCoin Contract")
         value = 1
-        end_date=1581074816
-        
+        end_date=1588291200
+
 
         admin = sp.address("tz1eRtFtKik3LyDvqVt3csXc64y6nn5BXyps")
         alice = sp.address("tz1aJLzguZuqbf1oH8aSPPiqrjed4H1YRDFi")
         bob   = sp.address("tz1MGJKeEoJpNZY3rP9V8yHWVrLPSRJvTyU2")
 
-        c1 = SmartToken(admin, value, end_date)
+        c1 = SmartCoin(admin, value, end_date)
 
         scenario += c1
-        scenario.h2("Admin Wallet Address")
-        scenario += c1.getAdministrator()
+        # scenario.h2("Admin Wallet Address")
+        # scenario += c1.getAdministrator()
         scenario.h2("Admin mints a few coins")
         scenario += c1.mint(address = alice, amount = 12).run(sender = admin)
         scenario += c1.mint(address = alice, amount = 3).run(sender = admin)
         scenario += c1.mint(address = alice, amount = 3).run(sender = admin)
-        
-        scenario.h2("Get Total Supply")
-        scenario += c1.getTotalSupply()
-        
+
+        # scenario.h2("Get Total Supply")
+        # scenario += c1.getTotalSupply()
+
         scenario.h2("Alice transfers to Bob")
         scenario += c1.transfer(fromAddr = alice, toAddr = bob, amount = 4).run(sender = alice)
         scenario.h2("Bob tries to transfer from Alice but he doesn't have her approval")
         scenario += c1.transfer(fromAddr = alice, toAddr = bob, amount = 4).run(sender = bob, valid = False)
-        
-        scenario.h2("Get Balance")
-        scenario += c1.getBalance()
-        
+
+        # scenario.h2("Get Balance")
+        # scenario += c1.getBalance()
+
         scenario.h2("Alice approves Bob and Bob transfers")
         scenario += c1.approve(fromAddr = alice, toAddr = bob, amount = 5).run(sender = alice)
         scenario += c1.transfer(fromAddr = alice, toAddr = bob, amount = 4).run(sender = bob)
@@ -143,17 +122,14 @@ if "templates" not in __name__:
         scenario.h2("Admin unpauses the contract and transferts are allowed")
         scenario += c1.setPause(False).run(sender = admin)
         scenario += c1.transfer(fromAddr = alice, toAddr = bob, amount = 1).run(sender = alice)
-        
-        scenario.h3("crowdSaleContract")
-       
-        scenario += c1.crowdSale(amount = 2).run(sender=alice, amount = sp.tez(2))
-        scenario += c1.crowdSale(amount = 4).run(sender=alice, amount = sp.tez(4))
+
+
 
         # scenario.verify(c1.data.totalSupply == 17)
         # scenario.verify(c1.data.balances[alice].balance == 8)
         # scenario.verify(c1.data.balances[bob].balance == 9)
-        
-        
+
+
         # scenario.h2("Crowdsale")
         # scenario += c1.crowdSale(value=1).run(sender=alice)
         # scenario += c1.mint(address = alice, amount = 1200).run(sender = admin)
