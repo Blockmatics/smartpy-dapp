@@ -1,5 +1,8 @@
 import smartpy as sp
 
+# Note: after deployment take the address of this contract and use it to set
+# the admin for the SmartCoin contract
+
 class CrowdFund(sp.Contract):
 
     def __init__(self, admin, end_date):
@@ -12,7 +15,7 @@ class CrowdFund(sp.Contract):
         tezValue=sp.tez(sp.as_nat(params.amount))
 
         sp.verify(sp.amount == tezValue)
-        c = sp.contract(sp.TRecord(address = sp.TAddress, amount = sp.TInt), sp.address("KT1CmbTPwU7agcpPyHJ43bpNtkKx2FoxWdab"), entry_point = "mint").open_some()
+        c = sp.contract(sp.TRecord(address = sp.TAddress, amount = sp.TInt), sp.address("KT18irkJx3YGwLLYtqAk7MGqHjM961ZX2Z1i"), entry_point = "mint").open_some()
         sp.if self.data.xtzContributionTotal < 50000 :
             mydata = sp.record(address = sp.sender,amount=params.amount*1200)
             sp.transfer(mydata, sp.amount, c)
@@ -29,7 +32,7 @@ class CrowdFund(sp.Contract):
 def test():
 
     end_date=1588291200
-    admin = sp.address("tz1eRtFtKik3LyDvqVt3csXc64y6nn5BXyps")
+    admin = sp.address("tz1NUy6m8PtECwtzapDKzxfqBgfkuWYphQR2")
     alice = sp.address("tz1aJLzguZuqbf1oH8aSPPiqrjed4H1YRDFi")
     scenario = sp.test_scenario()
     c = CrowdFund(admin, end_date)
