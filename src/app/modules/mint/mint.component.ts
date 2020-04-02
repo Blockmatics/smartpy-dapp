@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Tezos, TezosToolkit } from '@taquito/taquito';
 import { InMemorySigner } from '@taquito/signer';
 import { FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-mint',
@@ -33,13 +34,14 @@ export class MintComponent implements OnInit {
   }
 
   async mint(wallet,amount) {
-          const provider = 'https://rpcalpha.tzbeta.net';
-          const signer: any = new InMemorySigner('edskRxy3LBTeJgLx7YUqaYaVTeeoLk8DtqCZzn2D5qz8numpvkXUKBYRXPcfaiJBRcJVPCRbEQBHtPch6ALKVTRqFWKgwk9jWG');
+          const provider = 'https://babylonnet.SmartPy.io';
+
+          const signer: any = new InMemorySigner(environment.inMemorySigner);
           //issuer = edskRxy3LBTeJgLx7YUqaYaVTeeoLk8DtqCZzn2D5qz8numpvkXUKBYRXPcfaiJBRcJVPCRbEQBHtPch6ALKVTRqFWKgwk9jWG
           Tezos.setProvider({ rpc: provider, signer });
         
           try {
-          const contract = await Tezos.contract.at('KT1BKmzXaV3A4m9qcvBXHujoNTLsQT1hjhX1');
+          const contract = await Tezos.contract.at(environment.contractAddress1);
 
           console.log("Printing contract methods...");
           console.log(contract.methods);
@@ -48,7 +50,7 @@ export class MintComponent implements OnInit {
           this.logs+='<p>'+JSON.stringify(await contract.storage())+'</p>';
           console.log(await contract.storage())
 
-          const op = await contract.methods.mint(amount,wallet)
+          const op = await contract.methods.mint(wallet,amount)
           .send({ fee: 30000, gasLimit: 200000 })
           //tz1SC26Bc2nCgs7Kh3Abf3tDwPYGDXiMAsWt
 

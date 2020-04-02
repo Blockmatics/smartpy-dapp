@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Tezos, TezosToolkit } from '@taquito/taquito';
 import { InMemorySigner } from '@taquito/signer';
 import { FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-spender-allowance',
@@ -42,7 +43,7 @@ export class SpenderAllowanceComponent implements OnInit {
           Tezos.setProvider({ rpc: provider, signer });
         
           try {
-          const contract = await Tezos.contract.at('KT1BKmzXaV3A4m9qcvBXHujoNTLsQT1hjhX1');
+          const contract = await Tezos.contract.at(environment.contractAddress1);
 
           console.log("Printing contract methods...");
           console.log(contract.methods);
