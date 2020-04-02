@@ -8,12 +8,14 @@
 					<mat-card-content>
 						<div class="example-container">
 							<mat-form-field>
-						    	<input matInput placeholder="Wallet Address"  formControlName="wallet">
+						    	<input matInput placeholder="From Address"  formControlName="fromAddr">
 						  	</mat-form-field>
+                <mat-form-field>
+                    <input matInput placeholder="To Address"  formControlName="toAddr">
+                  </mat-form-field>
 						  	<mat-form-field>
 						    	<input matInput placeholder="Amount" formControlName="amount">
 						  	</mat-form-field>
-
 						  	<mat-form-field>
 						    	<input matInput placeholder="Secret Key" formControlName="secret">
 						  	</mat-form-field>
@@ -23,7 +25,7 @@
 				  			</mat-card-actions>
 			  			</div>
 					</mat-card-content>
-				</form>  
+				</form>
 			</mat-card>
 
   	</mat-grid-tile>
@@ -38,5 +40,3 @@
 			</mat-card>
 	</mat-grid-tile>
 </mat-grid-list>
-
-

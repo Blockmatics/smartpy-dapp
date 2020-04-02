@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
   dataSource = [];
 
   constructor() {
-    this.tk.setProvider({ rpc: 'https://rpcalpha.tzbeta.net' });
+    this.tk.setProvider({ rpc: 'https://carthagenet.SmartPy.io' });
   }
 
   ngOnInit() {
@@ -25,11 +25,11 @@ export class HomeComponent implements OnInit {
   }
 
 	 async  getStorage() {
-      const provider = 'https://rpcalpha.tzbeta.net';
-      const signer: any = new InMemorySigner('edskRxy3LBTeJgLx7YUqaYaVTeeoLk8DtqCZzn2D5qz8numpvkXUKBYRXPcfaiJBRcJVPCRbEQBHtPch6ALKVTRqFWKgwk9jWG');
+      const provider = 'https://carthagenet.SmartPy.io';
+      const signer: any = new InMemorySigner('edskS9aekGfn4fyg6Eesvma1u5GZpKYunVVMtHZmPE8Ke25pEX3iXc1fsvs3icmjLSZuGtFwxyR9PyLtfeHzm8rS3ZhWTXr5KX');
       Tezos.setProvider({ rpc: provider, signer });
       try {
-          const contract = await Tezos.contract.at('KT1BKmzXaV3A4m9qcvBXHujoNTLsQT1hjhX1');
+          const contract = await Tezos.contract.at('KT1MXGEhDQcbvoLtf5W5RntBNtkeTYdNZ5tj');
           const storage=await contract.storage();
           console.log(storage);
 
@@ -52,7 +52,7 @@ export class HomeComponent implements OnInit {
     }
 
     async testfun(){
-       const provider = 'https://rpcalpha.tzbeta.net';
+       const provider = 'https://carthagenet.SmartPy.io';
           const signer: any = new InMemorySigner('edskRnayNbLn6qriLXbXxiM21cwnx12QumBmk7sPZTL1eFECQqrNfuzfHnPHb7sTBFQQxM2PeZRNXwUAUgXA8P5GykzQDp8C5C');
           Tezos.setProvider({ rpc: provider, signer });
           try {

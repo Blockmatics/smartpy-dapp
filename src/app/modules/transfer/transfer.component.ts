@@ -17,7 +17,8 @@ export class TransferComponent implements OnInit {
   ngOnInit() {
 
   	this.transferform = this.formBuilder.group({
-            wallet: ['', Validators.required],
+            fromAddr: ['', Validators.required],
+            toAddr: ['', Validators.required],
             amount: ['', Validators.compose([Validators.required,Validators.pattern('[0-9]*')])],
             secret: ['', Validators.required]
         });
@@ -26,22 +27,23 @@ export class TransferComponent implements OnInit {
 
   async login(form){
   	this.logs+='<p>Submitting Form</p>';
-  	let walletid = this.transferform.value.wallet;
+  	let fromAddr = this.transferform.value.fromAddr;
+    let toAddr = this.transferform.value.toAddr;
   	let amt= this.transferform.value.amount;
     let secretky= this.transferform.value.secret;
-  	let response = await this.transfer(walletid,amt,secretky);
+  	let response = await this.transfer(fromAddr, toAddr,amt,secretky);
   	console.log('response');
 
   }
 
-  async transfer(wallet,amount,secretky) {
-          const provider = 'https://rpcalpha.tzbeta.net';
+  async transfer(fromAddr,toAddr,amount,secretky) {
+          const provider = 'https://carthagenet.SmartPy.io';
           const signer: any = new InMemorySigner(secretky);
-          //edskRxy3LBTeJgLx7YUqaYaVTeeoLk8DtqCZzn2D5qz8numpvkXUKBYRXPcfaiJBRcJVPCRbEQBHtPch6ALKVTRqFWKgwk9jWG
+          //edskS9aekGfn4fyg6Eesvma1u5GZpKYunVVMtHZmPE8Ke25pEX3iXc1fsvs3icmjLSZuGtFwxyR9PyLtfeHzm8rS3ZhWTXr5KX
           Tezos.setProvider({ rpc: provider, signer });
-        
+
           try {
-          const contract = await Tezos.contract.at('KT1BKmzXaV3A4m9qcvBXHujoNTLsQT1hjhX1');
+          const contract = await Tezos.contract.at('KT1MXGEhDQcbvoLtf5W5RntBNtkeTYdNZ5tj');
 
           console.log("Printing contract methods...");
           console.log(contract.methods);
@@ -50,7 +52,7 @@ export class TransferComponent implements OnInit {
           this.logs+='<p>'+JSON.stringify(await contract.storage())+'</p>';
           console.log(await contract.storage())
 
-          const op = await contract.methods.transfer(amount,wallet)
+          const op = await contract.methods.transfer(amount,fromAddr, toAddr)
           .send({ fee: 30000, gasLimit: 200000 })
           //tz1SC26Bc2nCgs7Kh3Abf3tDwPYGDXiMAsWt
 

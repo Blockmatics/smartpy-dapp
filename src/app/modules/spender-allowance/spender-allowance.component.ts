@@ -36,13 +36,13 @@ export class SpenderAllowanceComponent implements OnInit {
   }
 
   async allow(wallet,amount,secretky) {
-          const provider = 'https://rpcalpha.tzbeta.net';
+          const provider = 'https://carthagenet.SmartPy.io';
           const signer: any = new InMemorySigner(secretky);
-          //edskRxy3LBTeJgLx7YUqaYaVTeeoLk8DtqCZzn2D5qz8numpvkXUKBYRXPcfaiJBRcJVPCRbEQBHtPch6ALKVTRqFWKgwk9jWG
+          //edskS9aekGfn4fyg6Eesvma1u5GZpKYunVVMtHZmPE8Ke25pEX3iXc1fsvs3icmjLSZuGtFwxyR9PyLtfeHzm8rS3ZhWTXr5KX
           Tezos.setProvider({ rpc: provider, signer });
         
           try {
-          const contract = await Tezos.contract.at('KT1BKmzXaV3A4m9qcvBXHujoNTLsQT1hjhX1');
+          const contract = await Tezos.contract.at('KT1MXGEhDQcbvoLtf5W5RntBNtkeTYdNZ5tj');
 
           console.log("Printing contract methods...");
           console.log(contract.methods);
