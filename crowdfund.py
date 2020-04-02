@@ -1,5 +1,8 @@
 import smartpy as sp
 
+# Note: after deployment take the address of this contract and use it to set
+# the admin for the SmartCoin contract
+
 class CrowdFund(sp.Contract):
 
     def __init__(self, admin, end_date):
@@ -31,6 +34,7 @@ def test():
     end_date=END_DATE
     admin = sp.address("ADMIN_TZ_ADDRESS")
     alice = sp.address("ALICE_TZ_ADDRESS")
+
     scenario = sp.test_scenario()
     c = CrowdFund(admin, end_date)
     scenario += c

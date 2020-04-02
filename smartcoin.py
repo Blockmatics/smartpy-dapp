@@ -1,5 +1,8 @@
 import smartpy as sp
 
+# Note: you MUST set the address of the admin in order to be able to mint. Set the admin
+# to be the address of the crowdfund contract.
+
 class SmartCoin(sp.Contract):
     def __init__(self, admin, value, end_date):
         self.init(paused = False, balances = sp.big_map(), administrator = admin, totalSupply = 0, end_date = sp.timestamp(end_date), storedValue = value)
@@ -78,11 +81,10 @@ if "templates" not in __name__:
         scenario.h1("SmartCoin Contract")
         value = 1
         end_date=END_DATE
-
-
         admin = sp.address("ADMIN_TZ_ADDRESS")
         alice = sp.address("ALICE_TZ_ADDRESS")
         bob   = sp.address("BOB_TZ_ADDRESS")
+
 
         c1 = SmartCoin(admin, value, end_date)
 
