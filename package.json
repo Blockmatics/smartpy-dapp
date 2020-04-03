@@ -21,7 +21,7 @@
     "@angular/platform-browser": "8.2.14",
     "@angular/platform-browser-dynamic": "8.2.14",
     "@angular/router": "8.2.14",
-    "@taquito/taquito": "^5.2.0-beta.1",
+    "@taquito/taquito": "^6.0.3-beta.0",
     "@types/jquery": "^3.3.31",
     "hammerjs": "^2.0.8",
     "jquery": "^3.4.1",

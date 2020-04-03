@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Tezos, TezosToolkit } from '@taquito/taquito';
 import { InMemorySigner } from '@taquito/signer';
 import { FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-transfer',
@@ -37,13 +38,11 @@ export class TransferComponent implements OnInit {
   }
 
   async transfer(fromAddr,toAddr,amount,secretky) {
-          const provider = 'https://carthagenet.SmartPy.io';
-          const signer: any = new InMemorySigner(secretky);
-          //edskS9aekGfn4fyg6Eesvma1u5GZpKYunVVMtHZmPE8Ke25pEX3iXc1fsvs3icmjLSZuGtFwxyR9PyLtfeHzm8rS3ZhWTXr5KX
-          Tezos.setProvider({ rpc: provider, signer });
+          Tezos.setProvider({rpc: environment.network});
+          Tezos.importKey(environment.inMemorySigner);
 
           try {
-          const contract = await Tezos.contract.at('KT1MXGEhDQcbvoLtf5W5RntBNtkeTYdNZ5tj');
+          const contract = await Tezos.contract.at(environment.contractAddress1);
 
           console.log("Printing contract methods...");
           console.log(contract.methods);
@@ -52,12 +51,7 @@ export class TransferComponent implements OnInit {
           this.logs+='<p>'+JSON.stringify(await contract.storage())+'</p>';
           console.log(await contract.storage())
 
-          const op = await contract.methods.transfer(amount,fromAddr, toAddr)
-          .send({ fee: 30000, gasLimit: 200000 })
-          //tz1SC26Bc2nCgs7Kh3Abf3tDwPYGDXiMAsWt
-
-
-          //const op = await contract.methods.crowdSale(amount).send({ fee: 30000, gasLimit: 200000,amount:amount })
+          const op = await contract.methods.transfer(amount,fromAddr, toAddr).send()
 
           console.log('Awaiting confirmation...');
           this.logs+='<p>Awaiting confirmation...Please wait!</p>';

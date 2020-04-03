@@ -37,10 +37,8 @@ export class SpenderAllowanceComponent implements OnInit {
   }
 
   async allow(wallet,amount,secretky) {
-          const provider = 'https://carthagenet.SmartPy.io';
-          const signer: any = new InMemorySigner(secretky);
-          //edskS9aekGfn4fyg6Eesvma1u5GZpKYunVVMtHZmPE8Ke25pEX3iXc1fsvs3icmjLSZuGtFwxyR9PyLtfeHzm8rS3ZhWTXr5KX
-          Tezos.setProvider({ rpc: provider, signer });
+          Tezos.setProvider({rpc: environment.network});
+          Tezos.importKey(environment.inMemorySigner);
 
           try {
           const contract = await Tezos.contract.at(environment.contractAddress1);

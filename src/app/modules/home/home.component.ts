@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Tezos, TezosToolkit } from '@taquito/taquito';
 import { InMemorySigner } from '@taquito/signer';
+import { environment } from '../../../environments/environment';
 
 
 @Component({
@@ -17,7 +18,7 @@ export class HomeComponent implements OnInit {
   dataSource = [];
 
   constructor() {
-    this.tk.setProvider({ rpc: 'https://carthagenet.SmartPy.io' });
+    this.tk.setProvider({ rpc: environment.network });
   }
 
   ngOnInit() {
@@ -25,11 +26,10 @@ export class HomeComponent implements OnInit {
   }
 
 	 async  getStorage() {
-      const provider = 'https://carthagenet.SmartPy.io';
-      const signer: any = new InMemorySigner('edskS9aekGfn4fyg6Eesvma1u5GZpKYunVVMtHZmPE8Ke25pEX3iXc1fsvs3icmjLSZuGtFwxyR9PyLtfeHzm8rS3ZhWTXr5KX');
-      Tezos.setProvider({ rpc: provider, signer });
+      Tezos.setProvider({rpc: environment.network});
+      Tezos.importKey(environment.inMemorySigner);
       try {
-          const contract = await Tezos.contract.at('KT1MXGEhDQcbvoLtf5W5RntBNtkeTYdNZ5tj');
+          const contract = await Tezos.contract.at(environment.contractAddress1);
           const storage=await contract.storage();
           console.log(storage);
 
@@ -53,11 +53,10 @@ export class HomeComponent implements OnInit {
     }
 
     async testfun(){
-       const provider = 'https://carthagenet.SmartPy.io';
-          const signer: any = new InMemorySigner('edskRnayNbLn6qriLXbXxiM21cwnx12QumBmk7sPZTL1eFECQqrNfuzfHnPHb7sTBFQQxM2PeZRNXwUAUgXA8P5GykzQDp8C5C');
-          Tezos.setProvider({ rpc: provider, signer });
+          Tezos.setProvider({rpc: environment.network});
+          Tezos.importKey(environment.inMemorySigner);
           try {
-          const contract = await Tezos.contract.at('KT1DWXB7jZSJ8RTiAUkNXimXkE3f2qyEddjB');
+          const contract = await Tezos.contract.at(environment.contractAddress1);
           const op = await contract.methods.replace(295);
           await op.send();
 

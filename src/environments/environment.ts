@@ -4,8 +4,9 @@
 
 export const environment = {
   production: false,
-  contractAddress1:'KT1PMingYxExNTXzRRSxwckkszdMQeFy19gG',
-  inMemorySigner:'edskRsaFNumPeGreRxnvXrZfCfvana2o4qNysVBWvm3j6DSvP71tcPbSt84r1U7BgYigXgqicBma4JLnHa3cANXCMWVScyu3i4'
+  contractAddress1:'KT1WvmH3BSawQyKy2mEfTvxvAuTSLSAtotAc',
+  inMemorySigner:'edskS9aekGfn4fyg6Eesvma1u5GZpKYunVVMtHZmPE8Ke25pEX3iXc1fsvs3icmjLSZuGtFwxyR9PyLtfeHzm8rS3ZhWTXr5KX',
+  network:'https://carthagenet.SmartPy.io'
 };
 
 /*

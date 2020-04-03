@@ -34,11 +34,9 @@ export class MintComponent implements OnInit {
   }
 
   async mint(wallet,amount) {
-          const provider = 'https://carthagenet.SmartPy.io';
 
-          const signer: any = new InMemorySigner(environment.inMemorySigner);
-          //issuer = edskRxy3LBTeJgLx7YUqaYaVTeeoLk8DtqCZzn2D5qz8numpvkXUKBYRXPcfaiJBRcJVPCRbEQBHtPch6ALKVTRqFWKgwk9jWG
-          Tezos.setProvider({ rpc: provider, signer });
+          Tezos.setProvider({rpc: environment.network});
+          Tezos.importKey(environment.inMemorySigner);
 
           try {
           const contract = await Tezos.contract.at(environment.contractAddress1);
@@ -50,8 +48,7 @@ export class MintComponent implements OnInit {
           this.logs+='<p>'+JSON.stringify(await contract.storage())+'</p>';
           console.log(await contract.storage())
 
-          const op = await contract.methods.mint(wallet,amount)
-          .send({ fee: 30000, gasLimit: 200000 })
+          const op = await contract.methods.mint(wallet,amount).send()
           //tz1SC26Bc2nCgs7Kh3Abf3tDwPYGDXiMAsWt
 
           console.log('Awaiting confirmation...');
