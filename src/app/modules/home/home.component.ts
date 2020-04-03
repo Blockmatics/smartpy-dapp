@@ -26,24 +26,17 @@ export class HomeComponent implements OnInit {
 
 	 async  getStorage() {
       const provider = 'https://carthagenet.SmartPy.io';
-<<<<<<< HEAD
       const signer: any = new InMemorySigner('edskS9aekGfn4fyg6Eesvma1u5GZpKYunVVMtHZmPE8Ke25pEX3iXc1fsvs3icmjLSZuGtFwxyR9PyLtfeHzm8rS3ZhWTXr5KX');
       Tezos.setProvider({ rpc: provider, signer });
       try {
           const contract = await Tezos.contract.at('KT1MXGEhDQcbvoLtf5W5RntBNtkeTYdNZ5tj');
-=======
-      const signer: any = new InMemorySigner('edskRqjJK9RCGXWVy2aj6TGXQjLg6Jt6aVzb8fZf1gV7Wd8eUrsb11tpDDLgxM5ufsptgJw8uZUX7VhxxosgupPBpHbrxgNeQA');
-      Tezos.setProvider({ rpc: provider, signer });
-      try {
-          const contract = await Tezos.contract.at('KT1KmX2tzCPWGXd5WDPmohtntBSDNjm8Poky');
->>>>>>> 17c70352aead6f3b7fc2da5e2544c4da7f29c694
           const storage=await contract.storage();
           console.log(storage);
 
           let balance = storage['balances'];
           let symbol = storage['symbol'];
           console.log(storage['administrator']);
-         
+
           const ELEMENT_DATA = [];
           let index=1;
 
