@@ -11,7 +11,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule,MatGridListModule,MatCardModule,MatInputModule, MatIconModule, MatSidenavModule, MatListModule, MatButtonModule,MatTableModule,MatFormFieldModule,MatSelectModule } from  '@angular/material';
 import { TransferComponent } from './modules/transfer/transfer.component';
 import { SpenderAllowanceComponent } from './modules/spender-allowance/spender-allowance.component';
-import { TransferFromComponent } from './modules/transfer-from/transfer-from.component';
 import { MintComponent } from './modules/mint/mint.component';
 import { BurnFromComponent } from './modules/burn-from/burn-from.component';
 
@@ -27,7 +26,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     NotFoundComponent,
     TransferComponent,
     SpenderAllowanceComponent,
-    TransferFromComponent,
     MintComponent,
     BurnFromComponent
   ],

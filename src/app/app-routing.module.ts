@@ -10,7 +10,6 @@ import { TransferComponent } from './modules/transfer/transfer.component';
 import { BurnFromComponent } from './modules/burn-from/burn-from.component';
 import { MintComponent } from './modules/mint/mint.component';
 import { SpenderAllowanceComponent } from './modules/spender-allowance/spender-allowance.component';
-import { TransferFromComponent } from './modules/transfer-from/transfer-from.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, },
@@ -20,7 +19,6 @@ const routes: Routes = [
   { path: 'burn-from', component: BurnFromComponent },
   { path: 'mint', component: MintComponent },
   { path: 'spender-allowance', component: SpenderAllowanceComponent },
-  { path: 'transfer-from', component: TransferFromComponent },
   { path: '**', component: NotFoundComponent }
 ];
 
