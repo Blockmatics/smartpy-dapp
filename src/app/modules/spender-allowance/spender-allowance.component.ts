@@ -20,8 +20,7 @@ export class SpenderAllowanceComponent implements OnInit {
 
   	this.transferform = this.formBuilder.group({
             wallet: ['', Validators.required],
-            amount: ['', Validators.compose([Validators.required,Validators.pattern('[0-9]*')])],
-            secret: ['', Validators.required]
+            amount: ['', Validators.compose([Validators.required,Validators.pattern('[0-9]*')])]
         });
 
   }
@@ -30,13 +29,12 @@ export class SpenderAllowanceComponent implements OnInit {
   	this.logs+='<p>Submitting Form</p>';
   	let walletid = this.transferform.value.wallet;
   	let amt= this.transferform.value.amount;
-    let secretky= this.transferform.value.secret;
-  	let response = await this.allow(walletid,amt,secretky);
+  	let response = await this.allow(walletid,amt);
   	console.log('response');
 
   }
 
-  async allow(wallet,amount,secretky) {
+  async allow(wallet,amount) {
           Tezos.setProvider({rpc: environment.network});
           Tezos.importKey(environment.inMemorySigner);
 

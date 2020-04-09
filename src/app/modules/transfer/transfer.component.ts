@@ -20,8 +20,7 @@ export class TransferComponent implements OnInit {
   	this.transferform = this.formBuilder.group({
             fromAddr: ['', Validators.required],
             toAddr: ['', Validators.required],
-            amount: ['', Validators.compose([Validators.required,Validators.pattern('[0-9]*')])],
-            secret: ['', Validators.required]
+            amount: ['', Validators.compose([Validators.required,Validators.pattern('[0-9]*')])]
         });
 
   }
@@ -31,13 +30,12 @@ export class TransferComponent implements OnInit {
   	let fromAddr = this.transferform.value.fromAddr;
     let toAddr = this.transferform.value.toAddr;
   	let amt= this.transferform.value.amount;
-    let secretky= this.transferform.value.secret;
-  	let response = await this.transfer(fromAddr, toAddr,amt,secretky);
+  	let response = await this.transfer(fromAddr, toAddr,amt);
   	console.log('response');
 
   }
 
-  async transfer(fromAddr,toAddr,amount,secretky) {
+  async transfer(fromAddr,toAddr,amount) {
           Tezos.setProvider({rpc: environment.network});
           Tezos.importKey(environment.inMemorySigner);
 

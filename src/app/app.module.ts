@@ -13,6 +13,7 @@ import { TransferComponent } from './modules/transfer/transfer.component';
 import { SpenderAllowanceComponent } from './modules/spender-allowance/spender-allowance.component';
 import { MintComponent } from './modules/mint/mint.component';
 import { BurnFromComponent } from './modules/burn-from/burn-from.component';
+import { TokenSummaryComponent } from './modules/token-summary/token-summary.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'; 
 
@@ -27,7 +28,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     TransferComponent,
     SpenderAllowanceComponent,
     MintComponent,
-    BurnFromComponent
+    BurnFromComponent,
+    TokenSummaryComponent
   ],
   imports: [
     BrowserModule,

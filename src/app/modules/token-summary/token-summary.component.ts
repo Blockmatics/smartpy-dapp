@@ -5,12 +5,12 @@ import { environment } from '../../../environments/environment';
 
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  selector: 'app-token-summary',
+  templateUrl: './token-summary.component.html',
+  styleUrls: ['./token-summary.component.css']
 })
 
-export class HomeComponent implements OnInit {
+export class TokenSummaryComponent implements OnInit {
 
  private tk: TezosToolkit = Tezos;
 
@@ -33,17 +33,15 @@ export class HomeComponent implements OnInit {
           const storage=await contract.storage();
           console.log(storage);
 
-          const bigMapDetail = await storage.accounts.get("tz1czTPARV4UREzjQXDiVWjJWR1CzzkT1LV3");
-
           let balance = storage['balances'];
           let symbol = storage['symbol'];
-          console.log(bigMapDetail);
+          console.log(storage['administrator']);
 
           const ELEMENT_DATA = [];
           let index=1;
 
           for (let [key] of Object.entries(balance)) {
-            console.log(key)
+            console.log(balance[key]['c'])
               //ELEMENT_DATA.push({position:index,wallet:key,balance:balance[key]['c'][0]});
               index++;
           }
