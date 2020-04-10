@@ -15,7 +15,7 @@ class CrowdFund(sp.Contract):
         tezValue=sp.tez(sp.as_nat(params.amount))
 
         sp.verify(sp.amount == tezValue)
-        c = sp.contract(sp.TRecord(address = sp.TAddress, amount = sp.TInt), sp.address("KT1AGLhFwQWcjw4HfLxYWbqao8M3KX3Bkgvk"), entry_point = "mint").open_some()
+        c = sp.contract(sp.TRecord(address = sp.TAddress, amount = sp.TInt), sp.address("SMARTCOIN_PKH"), entry_point = "mint").open_some()
         sp.if self.data.xtzContributionTotal < 50000 :
             mydata = sp.record(address = sp.sender,amount=params.amount*1200)
             sp.transfer(mydata, sp.amount, c)
@@ -32,9 +32,9 @@ class CrowdFund(sp.Contract):
 @sp.add_test(name = "CrowdFund")
 def test():
 
-    end_date=1965105624
-    admin = sp.address("tz1W8LrehLPsRF35whAx1SFNwJKGnK3GPQLD")
-    alice = sp.address("tz1czTPARV4UREzjQXDiVWjJWR1CzzkT1LV3")
+    end_date=END_DATE
+    admin = sp.address("ADMIN_TZ_ADDRESS")
+    alice = sp.address("ALICE_TZ_ADDRESS")
 
     scenario = sp.test_scenario()
     c = CrowdFund(admin, end_date)

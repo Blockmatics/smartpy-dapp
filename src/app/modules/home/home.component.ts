@@ -32,13 +32,8 @@ export class HomeComponent implements OnInit {
           const contract = await Tezos.contract.at(environment.contractAddress1);
           const storage=await contract.storage();
           console.log(storage);
-
-          const bigMapDetail = await storage.accounts.get("tz1czTPARV4UREzjQXDiVWjJWR1CzzkT1LV3");
-
           let balance = storage['balances'];
           let symbol = storage['symbol'];
-          console.log(bigMapDetail);
-
           const ELEMENT_DATA = [];
           let index=1;
 

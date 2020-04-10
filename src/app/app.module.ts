@@ -14,6 +14,7 @@ import { SpenderAllowanceComponent } from './modules/spender-allowance/spender-a
 import { MintComponent } from './modules/mint/mint.component';
 import { BurnFromComponent } from './modules/burn-from/burn-from.component';
 import { TokenSummaryComponent } from './modules/token-summary/token-summary.component';
+import { CrowdfunderComponent } from './modules/crowdfunder/crowdfunder.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'; 
 
@@ -29,7 +30,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SpenderAllowanceComponent,
     MintComponent,
     BurnFromComponent,
-    TokenSummaryComponent
+    TokenSummaryComponent,
+    CrowdfunderComponent
   ],
   imports: [
     BrowserModule,

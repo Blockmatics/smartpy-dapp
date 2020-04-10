@@ -80,10 +80,10 @@ if "templates" not in __name__:
         scenario = sp.test_scenario()
         scenario.h1("SmartCoin Contract")
         value = 1
-        end_date=1965105624
-        admin = sp.address("tz1W8LrehLPsRF35whAx1SFNwJKGnK3GPQLD")
-        alice = sp.address("tz1czTPARV4UREzjQXDiVWjJWR1CzzkT1LV3")
-        bob   = sp.address("tz1Va2pdDLgh2PZpcFthTifSCovJs9dTaZKc")
+        end_date=END_DATE
+        admin = sp.address("ADMIN_TZ_ADDRESS")
+        alice = sp.address("ALICE_TZ_ADDRESS")
+        bob   = sp.address("BOB_TZ_ADDRESS")
 
 
         c1 = SmartCoin(admin, value, end_date)

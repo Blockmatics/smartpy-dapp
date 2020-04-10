@@ -11,6 +11,7 @@ import { BurnFromComponent } from './modules/burn-from/burn-from.component';
 import { MintComponent } from './modules/mint/mint.component';
 import { SpenderAllowanceComponent } from './modules/spender-allowance/spender-allowance.component';
 import { TokenSummaryComponent } from './modules/token-summary/token-summary.component';
+import { CrowdfunderComponent } from './modules/crowdfunder/crowdfunder.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, },
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'mint', component: MintComponent },
   { path: 'spender-allowance', component: SpenderAllowanceComponent },
   { path: 'token-summary', component: TokenSummaryComponent },
+  { path: 'crowdfunder', component: CrowdfunderComponent },
   { path: '**', component: NotFoundComponent }
 ];
 
