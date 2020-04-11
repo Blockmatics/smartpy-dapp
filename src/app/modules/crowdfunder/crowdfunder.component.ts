@@ -20,6 +20,7 @@ export class CrowdfunderComponent implements OnInit {
   avg=0;
   administrator='';
   end_date='';
+  start_date='';
   loading='Loading...'
 
   constructor() {
@@ -35,7 +36,11 @@ export class CrowdfunderComponent implements OnInit {
       Tezos.importKey(environment.inMemorySigner);
       try {
           const contract = await Tezos.contract.at(environment.contractAddress1);
+          //console.log(contract);
           const storage=JSON.parse(JSON.stringify(await contract.storage()));
+
+          
+
           this.totalSupply=storage.totalSupply;
           this.administrator=storage.administrator;
       } catch (ex) {
@@ -47,6 +52,7 @@ export class CrowdfunderComponent implements OnInit {
           const storage=JSON.parse(JSON.stringify(await contract.storage()));
           this.contributionCount=storage.contributionCount;
           this.xtzContributionTotal=storage.xtzContributionTotal;
+          this.start_date=storage.start_date;
           this.end_date=storage.end_date;
           if(storage.contributionCount > 0){
             this.avg=this.xtzContributionTotal/this.contributionCount;

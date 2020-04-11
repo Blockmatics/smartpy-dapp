@@ -4,11 +4,12 @@
         <mat-card-title>
           Crowdfunder
         </mat-card-title>
-        
           <mat-card-content>
             <div style="font-weight: 900" [innerHtml]="loading"></div>
             <br>
             <div>Administrator : <span style="font-weight: 900" [innerHtml]="administrator"></span></div>
+            <br>
+            <div>Start date : <span style="font-weight: 900" [innerHtml]="start_date"></span></div>
             <br>
             <div>End date : <span style="font-weight: 900" [innerHtml]="end_date"></span></div>
             <br>
@@ -19,9 +20,7 @@
             <div>Number of contributions : <span style="font-weight: 900" [innerHtml]="contributionCount"></span></div>
             <br>
             <div>Number of tokens created : <span style="font-weight: 900" [innerHtml]="totalSupply"></span></div>
-          
           </mat-card-content>
-          
       </mat-card>
 
     </mat-grid-tile>

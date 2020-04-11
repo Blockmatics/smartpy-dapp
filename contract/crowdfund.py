@@ -6,7 +6,7 @@ import smartpy as sp
 class CrowdFund(sp.Contract):
 
     def __init__(self, admin, end_date):
-        self.init( administrator = admin, xtzContributionTotal = 0, contributionCount = 0, end_date = sp.timestamp(end_date))
+        self.init( administrator = admin, xtzContributionTotal = 0, contributionCount = 0, start_date = sp.timestamp_from_utc_now(), end_date = sp.timestamp(end_date))
 
 
     @sp.entry_point
@@ -27,7 +27,7 @@ class CrowdFund(sp.Contract):
             mydata = sp.record(address = self.data.administrator,amount=params.amount*100)
             sp.transfer(mydata, sp.mutez(0), c)
         self.data.xtzContributionTotal += params.amount
-        self.data.contributionCount++
+        self.data.contributionCount += 1
 
 @sp.add_test(name = "CrowdFund")
 def test():

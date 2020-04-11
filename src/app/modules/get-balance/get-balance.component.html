@@ -2,7 +2,7 @@
   <mat-grid-tile>
   			<mat-card class="example-card">
 				<mat-card-title>
-					Spender Allowance
+					Get Balance
 				</mat-card-title>
 				<form [formGroup]="transferform" (submit)="login($event)">
 					<mat-card-content>
@@ -10,14 +10,12 @@
 							<mat-form-field>
 						    	<input matInput placeholder="Wallet Address to Allow"  formControlName="wallet">
 						  	</mat-form-field>
-						  	<mat-form-field>
-						    	<input matInput placeholder="Amount" formControlName="amount">
-						  	</mat-form-field>
+						  	
 
 						  	
 
 							<mat-card-actions>
-				    			<button mat-raised-button type="submit" color="primary">Transfer</button>
+				    			<button mat-raised-button type="submit" color="primary">Submit</button>
 				  			</mat-card-actions>
 			  			</div>
 					</mat-card-content>
@@ -28,7 +26,7 @@
   	<mat-grid-tile>
   			<mat-card class="example-card">
 				<mat-card-title>
-					Logs
+					Result
 				</mat-card-title>
 					<mat-card-content>
 						<div class="one" [innerHtml]="logs"></div>
