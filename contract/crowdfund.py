@@ -5,8 +5,8 @@ import smartpy as sp
 
 class CrowdFund(sp.Contract):
 
-    def __init__(self, admin, end_date):
-        self.init( administrator = admin, xtzContributionTotal = 0, contributionCount = 0, start_date = sp.timestamp_from_utc_now(), end_date = sp.timestamp(end_date))
+    def __init__(self, admin, token_contract_addr, end_date):
+        self.init( administrator = admin, tokenContract = token_contract_addr, xtzContributionTotal = 0, contributionCount = 0, start_date = sp.timestamp_from_utc_now(), end_date = sp.timestamp(end_date))
 
 
     @sp.entry_point
@@ -15,7 +15,7 @@ class CrowdFund(sp.Contract):
         tezValue=sp.tez(sp.as_nat(params.amount))
 
         sp.verify(sp.amount == tezValue)
-        c = sp.contract(sp.TRecord(address = sp.TAddress, amount = sp.TInt), sp.address("SMARTCOIN_PKH"), entry_point = "mint").open_some()
+        c = sp.contract(sp.TRecord(address = sp.TAddress, amount = sp.TInt), self.data.tokenContract, entry_point = "mint").open_some()
         sp.if self.data.xtzContributionTotal < 50000 :
             mydata = sp.record(address = sp.sender,amount=params.amount*1200)
             sp.transfer(mydata, sp.amount, c)
@@ -35,9 +35,10 @@ def test():
     end_date=END_DATE
     admin = sp.address("ADMIN_TZ_ADDRESS")
     alice = sp.address("ALICE_TZ_ADDRESS")
+    token_contract_addr = sp.address("CONTRACT_PKH")
 
     scenario = sp.test_scenario()
-    c = CrowdFund(admin, end_date)
+    c = CrowdFund(admin, token_contract_addr, end_date)
     scenario += c
     scenario.h3("crowdSaleContract")
     scenario += c.contribute(amount = 2).run(sender=alice, amount = sp.tez(2))
