@@ -43,7 +43,7 @@ export class GetBalanceComponent implements OnInit {
           this.logs+='<p>Your token balance is '+balances+'</p>';
 
           } catch (ex) {
-             console.log(ex)
+             this.logs+='<p>Not Found</p>';
           }
   }
 
