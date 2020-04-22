@@ -39,6 +39,7 @@ export class GetBalanceComponent implements OnInit {
           try {
           const contract = await Tezos.contract.at(environment.contractAddress1);
           const contractStorage = await contract.storage();
+          // @ts-ignore
           const balances= (await contractStorage.balances.get(wallet)).balance.c[0];
           this.logs+='<p>Your token balance is '+balances+'</p>';
 
