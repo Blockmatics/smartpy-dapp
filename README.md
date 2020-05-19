@@ -35,5 +35,6 @@ What you need to run this app:
 
 
 ### Author
-* Author  : Sohan Yadav
-* Email : sonu5650@gmail.com
+* Blockmatics
+* Author: Sohan Yadav
+* Email: asksol@blockmatics.io
