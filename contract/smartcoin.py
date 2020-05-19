@@ -56,22 +56,11 @@ class SmartCoin(sp.Contract):
         sp.if ~ self.data.balances.contains(address):
             self.data.balances[address] = sp.record(balance = 0, approvals = {})
 
-    # @sp.entry_point
+    # The following methods should be added too
     # def getBalance(self, params):
-    #     return self.data.balances
-
-    #  @sp.entry_point
-    #  def getAllowance(self, params):
-    #      pass
-
-    # @sp.entry_point
+    # def getAllowance(self, params):
     # def getTotalSupply(self, params):
-    #     return self.data.totalSupply
-
-    # @sp.entry_point
     # def getAdministrator(self, params):
-    #     return self.data.administrator
-
 
 if "templates" not in __name__:
     @sp.add_test(name = "SmartCoin")
@@ -89,23 +78,15 @@ if "templates" not in __name__:
         c1 = SmartCoin(admin, value, end_date)
 
         scenario += c1
-        # scenario.h2("Admin Wallet Address")
-        # scenario += c1.getAdministrator()
         scenario.h2("Admin mints a few coins")
         scenario += c1.mint(address = alice, amount = 12).run(sender = admin)
         scenario += c1.mint(address = alice, amount = 3).run(sender = admin)
         scenario += c1.mint(address = alice, amount = 3).run(sender = admin)
 
-        # scenario.h2("Get Total Supply")
-        # scenario += c1.getTotalSupply()
-
         scenario.h2("Alice transfers to Bob")
         scenario += c1.transfer(fromAddr = alice, toAddr = bob, amount = 4).run(sender = alice)
         scenario.h2("Bob tries to transfer from Alice but he doesn't have her approval")
         scenario += c1.transfer(fromAddr = alice, toAddr = bob, amount = 4).run(sender = bob, valid = False)
-
-        # scenario.h2("Get Balance")
-        # scenario += c1.getBalance()
 
         scenario.h2("Alice approves Bob and Bob transfers")
         scenario += c1.approve(fromAddr = alice, toAddr = bob, amount = 5).run(sender = alice)
@@ -125,14 +106,6 @@ if "templates" not in __name__:
         scenario += c1.setPause(False).run(sender = admin)
         scenario += c1.transfer(fromAddr = alice, toAddr = bob, amount = 1).run(sender = alice)
 
-
-
         # scenario.verify(c1.data.totalSupply == 17)
         # scenario.verify(c1.data.balances[alice].balance == 8)
         # scenario.verify(c1.data.balances[bob].balance == 9)
-
-
-        # scenario.h2("Crowdsale")
-        # scenario += c1.crowdSale(value=1).run(sender=alice)
-        # scenario += c1.mint(address = alice, amount = 1200).run(sender = admin)
-        # scenario += c1.mint(address = admin, amount = 120).run(sender = admin)
