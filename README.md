@@ -2,10 +2,10 @@
 
 ```bash
 # clone the repo
-git clone https://github.com/Blockmatics/tezos-dapp.git
+git clone https://github.com/Blockmatics/smartpy-dapp.git
 
 # change directory
-cd tezos-dapp
+cd smartpy-dapp
 
 # install the repo with npm
 npm install
