@@ -25,9 +25,9 @@ What you need to run this app:
 * npm (node package manager) version 6.12.0
 
 ## Getting Started
-#### npm commands execute the scripts part of `package.json`. like on `npm start` the angular-cli execute `ng serve --host 0.0.0.0 --port 4200` and similarly for `npm run build` or `npm build` it execute `ng build`
+ npm commands execute the scripts part of `package.json`. like on `npm start` the angular-cli execute `ng serve --host 0.0.0.0 --port 4200` and similarly for `npm run build` or `npm build` it execute `ng build`
 
-#### Important `npm test`, `npm start`,`npm build`, `npm restart`, and `npm stop` are all aliases for `npm run xxx` so no need to confuse.
+Important `npm test`, `npm start`,`npm build`, `npm restart`, and `npm stop` are all aliases for `npm run xxx` so no need to confuse.
 
 ### Development
 * `npm run start`
